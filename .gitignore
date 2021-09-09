@@ -1,0 +1,16 @@
+.DS_Store
+Thumbs.db
+
+node_modules/
+
+/dist
+*.tsbuildinfo
+
+*.log
+pids
+*.pid
+*.pid.lock
+
+.vscode
+
+.eslintcache
