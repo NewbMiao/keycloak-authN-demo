@@ -1,5 +1,8 @@
 node_modules
 images
-.codesandbox
 .git
+dist
 .vscode
+.DS_Store
+Thumbs.db
+.eslintcache
