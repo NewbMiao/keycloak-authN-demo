@@ -286,6 +286,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "http://localhost:3000/*",
+        "http://localhost/*",
         "https://www.keycloak.org/app/*"
       ],
       "webOrigins": [

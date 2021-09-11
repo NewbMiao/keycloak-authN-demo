@@ -1,4 +1,9 @@
 .App {
+  font-size: 32px;
+  padding: 16px;
   font-family: sans-serif;
-  text-align: center;
+}
+code {
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }

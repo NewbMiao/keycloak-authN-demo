@@ -1,0 +1,80 @@
+---
+version: "3.6"
+
+networks:
+    auth_network:
+        driver: bridge
+
+services:
+    opa-server:
+        depends_on:
+            - keycloak-server
+        image: openpolicyagent/opa:latest
+        container_name: opa-server-container
+        hostname: opa-server
+        restart: always
+        working_dir: /code
+        volumes:
+            - ./opa/verify.rego:/code/verify.rego
+        environment: 
+            IN_DOCKER: "true"
+        ports:
+            - "8181:8181"
+        networks:
+            - auth_network
+        command: run -s -a 0.0.0.0:8181 verify.rego
+  
+  
+    keycloak-server:
+        build:
+            context: ./keycloak
+            dockerfile: Dockerfile
+        image: keycloak-server
+        container_name: keycloak-server-container
+        hostname: keycloak-server
+        restart: always
+        volumes:
+            - ./keycloak:/code
+        ports:
+            - "8080:8080"
+        networks:
+            - auth_network
+        working_dir: /code
+    
+    react-demo:
+        depends_on:
+            - opa-server
+            - keycloak-server
+        build:
+            context: ../
+            dockerfile: ../Dockerfile
+        image: react-demo
+        container_name: react-demo-container
+        hostname: react-demo
+        restart: always
+        working_dir: /app
+        environment: 
+            REACT_APP_AUTH_URL: localhost
+            REACT_APP_OPA_URL: localhost/opa
+        volumes:
+            - ../:/app
+        ports:
+            - "3000:3000"
+        networks:
+            - auth_network
+
+    nginx-proxy:
+        depends_on:
+            - react-demo
+            - opa-server
+            - keycloak-server
+        restart: always 
+        image: nginx:1.21.3
+        container_name: nginx-proxy-container
+        hostname: nginx-proxy
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx/auth.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - auth_network

@@ -6,6 +6,6 @@ ENV KEYCLOAK_USER admin
 ENV KEYCLOAK_PASSWORD admin
 ENV KEYCLOAK_IMPORT /tmp/realm-export.json
 
-RUN /opt/jboss/keycloak/bin/add-user-keycloak.sh  -r myrealm -u myuser -p 123456
+RUN /opt/jboss/keycloak/bin/add-user-keycloak.sh  -r myrealm -u myuser -p myuser
 
 EXPOSE 8080
