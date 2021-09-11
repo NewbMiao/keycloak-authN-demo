@@ -9,7 +9,7 @@ services:
     opa-server:
         depends_on:
             - keycloak-server
-        image: openpolicyagent/opa:latest
+        image: openpolicyagent/opa:0.32.0
         container_name: opa-server-container
         hostname: opa-server
         restart: always
@@ -28,7 +28,6 @@ services:
     keycloak-server:
         build:
             context: ./keycloak
-            dockerfile: Dockerfile
         image: keycloak-server
         container_name: keycloak-server-container
         hostname: keycloak-server
@@ -47,7 +46,6 @@ services:
             - keycloak-server
         build:
             context: ../
-            dockerfile: ../Dockerfile
         image: react-demo
         container_name: react-demo-container
         hostname: react-demo
